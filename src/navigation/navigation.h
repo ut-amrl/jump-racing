@@ -49,6 +49,23 @@ class Navigation {
    // Constructor
   explicit Navigation(const std::string& map_file, ros::NodeHandle* n);
 
+  void computeTurnParameters(float proposed_curvature);
+
+  float scorePath(float clearance, float distance_to_goal);
+
+  float getClearanceOfPointCurved(Eigen::Vector2f point, float dist_from_center);
+  float getClearanceOfPointLinear(Eigen::Vector2f point);
+  float getClearanceOfPath();
+
+  float getDistanceFromGoal();
+
+  float distanceAlongPathLinear(Eigen::Vector2f point);
+  float distanceAlongPathCurved(Eigen::Vector2f point);
+
+  float calculateFreePathLength();
+
+  float CalculateCurrentAcceleration(float safe_deceleration_distance, float robot_speed);
+
   // Used in callback from localization to update position.
   void UpdateLocation(const Eigen::Vector2f& loc, float angle);
 
@@ -62,10 +79,14 @@ class Navigation {
   void ObservePointCloud(const std::vector<Eigen::Vector2f>& cloud,
                          double time);
 
-  // Main function called continously from main
-  void Run();
   // Used to set the next target pose.
   void SetNavGoal(const Eigen::Vector2f& loc, float angle);
+
+  // All visualizations put together to declutter Run()
+  void Visualizations(float max_safe_decelration_distance, float clearance);
+
+  // Main function called continously from main
+  void Run();
 
  private:
 
@@ -100,6 +121,12 @@ class Navigation {
   float nav_goal_angle_;
   // Map of the environment.
   vector_map::VectorMap map_;
+
+  Eigen::Vector2f starting_odom_;
+
+  float safe_deceleration_distance_;
+
+  Eigen::Vector2f goal;
 };
 
 }  // namespace navigation

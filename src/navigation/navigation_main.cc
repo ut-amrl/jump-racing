@@ -94,6 +94,18 @@ void LaserCallback(const sensor_msgs::LaserScan& msg) {
   // msg.range_max // Maximum observable range
   // msg.range_min // Minimum observable range
   // msg.ranges[i] // The range of the i'th ray
+  for(int i = 0; i < (msg.angle_max - msg.angle_min) / msg.angle_increment; i++) {
+
+    float angle = i * msg.angle_increment + msg.angle_min;
+    float range = msg.ranges[i];
+    if(range >= msg.range_max || range <= msg.range_min) {
+      continue;
+    } else {
+      Vector2f point = Vector2f(range*cos(angle) + kLaserLoc[0], range*sin(angle) + kLaserLoc[1]);
+      point_cloud_.push_back(point);
+    }
+
+  }
   navigation_->ObservePointCloud(point_cloud_, msg.header.stamp.toSec());
   last_laser_msg_ = msg;
 }
