@@ -1,7 +1,7 @@
 PROJECT(reference_car)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-MESSAGE(STATUS "Compiling Jumps")
+MESSAGE(STATUS "Compiling Reference Car Localization + Navigation")
 MESSAGE(STATUS "Using compiler: ${CMAKE_CXX_COMPILER}")
 MESSAGE(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS "Arch: ${CMAKE_SYSTEM_PROCESSOR}")
@@ -25,15 +25,31 @@ MESSAGE(STATUS "ROS-Overrride Build Type: ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS "CXX Flags: ${CMAKE_CXX_FLAGS}")
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 SET(libs roslib roscpp rosbag glog gflags amrl_shared_lib boost_system lua5.1
     pthread)
-    
+
+ADD_LIBRARY(shared_library
+            src/visualization/visualization.cc
+            src/vector_map/vector_map.cc)
+
 ADD_SUBDIRECTORY(src/shared)
 INCLUDE_DIRECTORIES(src/shared)
 INCLUDE_DIRECTORIES(src)
+
+ROSBUILD_ADD_EXECUTABLE(particle_filter
+                        src/particle_filter/particle_filter_main.cc
+                        src/particle_filter/particle_filter.cc)
+TARGET_LINK_LIBRARIES(particle_filter shared_library ${libs})
 
 ROSBUILD_ADD_EXECUTABLE(navigation
                         src/navigation/navigation_main.cc
                         src/navigation/navigation.cc)
 TARGET_LINK_LIBRARIES(navigation shared_library ${libs})
+
+ADD_EXECUTABLE(eigen_tutorial
+               src/eigen_tutorial.cc)
+
+ADD_EXECUTABLE(simple_queue_test
+               src/navigation/simple_queue_test.cc)
