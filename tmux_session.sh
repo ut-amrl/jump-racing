@@ -20,7 +20,7 @@ then
         echo "tmux session is not running."
         exit 0
     fi
-    
+
     echo "Killing running tmux session"
     tmux kill-session -t $session > /dev/null 2>&1
     exit 0
@@ -56,7 +56,7 @@ then
     exit 127
 fi
 
-tmux new-session -d -s $session 
+tmux new-session -d -s $session
 tmux set mouse on
 window=0
 
@@ -71,7 +71,7 @@ window=2
 tmux new-window -t $session:$window -n 'websocket'
 tmux send-keys -t $session:$window "cd ${INSTALL_PATH}/ut_automata && ./bin/websocket" C-m
 
-if ! [ -z ${CS378_DOCKER_CONTEXT+x} ]
+if ! [ -z ${JUMP_RACING_DOCKER_CONTEXT+x} ]
 then
     /bin/bash
 fi

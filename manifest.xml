@@ -1,10 +1,10 @@
 <package>
-  <description brief="cs378_starter">
+  <description brief="Jump Racing">
 
-    Starter code for cs378 Autonomous Driving
+
 
   </description>
-  <name>cs378_starter</name>
+  <name>Jump Racing</name>
   <author>Joydeep Biswas</author>
   <license>MIT</license>
   <review status="unreviewed" notes=""/>

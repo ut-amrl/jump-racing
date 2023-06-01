@@ -18,21 +18,21 @@ all: build/CMakeLists.txt.copy
 	$(MAKE) --no-print-directory -C build
 
 docker_all: docker_build_q
-	docker run --rm --volume "$(shell pwd)":/home/dev/cs378_starter cs378_starter "cd cs378_starter && make -j"
+	docker run --rm --volume "$(shell pwd)":/home/dev/jump_racing jump_racing "cd jump_racing && make -j"
 
 docker_shell: docker_build_q
-	if [ $(shell docker ps -a -f name=cs378_starter_shell | wc -l) -ne 2 ]; then docker run -dit --name cs378_starter_shell --volume "$(shell pwd)":/home/dev/cs378_starter --workdir /home/dev/cs378_starter -p 10272:10272 cs378_starter; fi
-	docker exec -it cs378_starter_shell bash -l
+	if [ $(shell docker ps -a -f name=jump_racing_shell | wc -l) -ne 2 ]; then docker run -dit --name jump_racing_shell --volume "$(shell pwd)":/home/dev/jump_racing --workdir /home/dev/jump_racing -p 10272:10272 jump_racing; fi
+	docker exec -it jump_racing_shell bash -l
 
 docker_stop:
-	docker container stop cs378_starter_shell
-	docker container rm cs378_starter_shell
+	docker container stop jump_racing_shell
+	docker container rm jump_racing_shell
 
 docker_build:
-	docker build --build-arg HOST_UID=$(shell id -u) -t cs378_starter .
+	docker build --build-arg HOST_UID=$(shell id -u) -t jump_racing .
 
 docker_build_q:
-	docker build -q --build-arg HOST_UID=$(shell id -u) -t cs378_starter .
+	docker build -q --build-arg HOST_UID=$(shell id -u) -t jump_racing .
 
 # Sets the build type to Debug.
 set_debug:

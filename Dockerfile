@@ -3,9 +3,9 @@ FROM registry.hub.docker.com/library/ros:noetic
 # install apt deps
 RUN apt-get update && \
     apt-get install -y git libgflags-dev libpopt-dev \
-                       libgoogle-glog-dev liblua5.1-0-dev \
-                       libboost-all-dev libqt5websockets5-dev \
-                       python-is-python3 libeigen3-dev sudo tmux
+    libgoogle-glog-dev liblua5.1-0-dev \
+    libboost-all-dev libqt5websockets5-dev \
+    python-is-python3 libeigen3-dev sudo tmux
 
 # install ros apt deps
 RUN apt-get install -y ros-noetic-tf ros-noetic-angles
@@ -23,15 +23,15 @@ RUN git clone https://github.com/ut-amrl/amrl_maps.git && \
 
 # set up .bashrc
 RUN echo "source /opt/ros/noetic/setup.sh\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/ut_automata\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/cs378_starter\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_maps\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_msgs" >> ~/.profile
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/ut_automata\n" \
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/jump-racing\n" \
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_maps\n" \
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_msgs" >> ~/.profile
 RUN echo "source /opt/ros/noetic/setup.bash\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/ut_automata\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/cs378_starter\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_maps\n" \
-"export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_msgs" >> ~/.bashrc
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/ut_automata\n" \
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/jump-racing\n" \
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_maps\n" \
+    "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:~/amrl_msgs" >> ~/.bashrc
 
 
 # build deps
@@ -39,7 +39,7 @@ RUN /bin/bash -lc "cd amrl_msgs && make"
 RUN /bin/bash -lc "cd ut_automata && make"
 
 # add launcher
-ENV CS378_DOCKER_CONTEXT 1
+ENV JUMP_RACING_DOCKER_CONTEXT 1
 COPY --chown=dev:dev ./tmux_session.sh /home/dev/tmux_session.sh
 RUN chmod u+x /home/dev/tmux_session.sh
 CMD [ "/home/dev/tmux_session.sh" ]
